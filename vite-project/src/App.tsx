@@ -10,6 +10,9 @@ type Comment = {
     body: string;
 };
 
+type CommentKeys = keyof Comment;
+type Order = "asc" | "desc";
+
 export default function App() {
     const [comments, setComments] = useState<Comment[]>([]);
     const [search, setSearch] = useState("");
@@ -48,12 +51,23 @@ export default function App() {
             || comment.body.toLowerCase().includes(search.toLowerCase())
         )
         .toSorted((a, b) => {
-                if (!selectOps) return;
-                const [field, order] = selectOps.split('-')
 
-                const result = a[field]?.localeCompare(b[field])
+                const [field, order] = selectOps.split("-") as [
+                    CommentKeys,
+                    Order
+                ];
 
-                return order === 'asc' ? result : -result
+                let result = 0;
+                const valueA = a[field] ?? 0;
+                const valueB = b[field] ?? 0;
+
+                if (typeof valueA === "string" && typeof valueB === "string") {
+                    return valueA.localeCompare(valueB);
+                } else {
+                    return order === "asc" ? result : -result;
+                }
+                return order === "asc" ? result : -result;
+
             }
         )
 

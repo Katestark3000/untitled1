@@ -26,7 +26,7 @@ export default function App() {
 
     useEffect(() => {
         const fetchComments = async () => {
-            const res = await fetch("${import.meta.env.BASE_URL}comments.json");
+            const res = await fetch(`${import.meta.env.BASE_URL}comments.json`);
             const data = await res.json();
             setComments(data);
         };
